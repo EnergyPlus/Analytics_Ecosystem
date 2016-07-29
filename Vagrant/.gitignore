@@ -1,0 +1,3 @@
+
+# ignore Vagrant configuration folder
+.vagrant/
