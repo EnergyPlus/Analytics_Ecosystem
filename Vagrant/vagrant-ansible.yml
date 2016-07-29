@@ -1,0 +1,15 @@
+---
+
+- hosts: all
+  become: yes
+  gather_facts: false
+  roles:
+    # On CoreOS pre-ansible installs Python required to run ansible steps.
+    - os-info
+
+- hosts: all
+  become: yes
+  vars:
+    - public_iface: "{{ ansible_default_ipv4.interface }}"
+  roles:
+    - hosts-file
