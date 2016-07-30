@@ -1,0 +1,44 @@
+# file: ./inventory/vagrant_servers
+
+# define the servers spinned up with vagrant.
+
+# support-server    ansible_ssh_host=172.32.128.10
+# gitlab-server     ansible_ssh_host=172.32.128.11
+# gitlab-runner-1   ansible_ssh_host=172.32.128.12
+# kube-master-1     ansible_ssh_host=172.32.128.13
+# kube-node-1       ansible_ssh_host=172.32.128.14
+
+[support-server]
+172.32.128.10
+
+[nfs]
+support-server
+
+[ldap]
+support-server
+
+[gitlab-server]
+172.32.128.11
+
+[gitlab-runner]
+172.32.128.12
+
+[k8s-master]
+172.32.128.13
+
+[k8s-etcd]
+k8s-master
+
+[k8s-node-1]
+172.32.128.14
+
+[vagrant:children]
+support-server
+gitlab-server
+gitlab-runner
+k8s-etcd
+k8s-master
+k8s-node-1
+
+[all:children]
+vagrant
