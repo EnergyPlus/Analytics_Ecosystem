@@ -1,0 +1,29 @@
+---
+
+- hosts: k8s
+  gather_facts: false
+  become: yes
+  roles:
+    # On CoreOS pre-ansible installs Python required to run further ansible steps.
+    - os-info
+
+# Install docker
+- hosts: k8s
+  become: yes
+  roles:
+    - common
+    # - docker
+  tags:
+    - docker
+
+- include: k8s_etcd.yml
+  tags:
+    - etcd
+
+- include: k8s_master.yml
+  tags:
+    - k8s_masters
+
+- include: k8s_nodes.yml
+  tags:
+    - k8s_nodes

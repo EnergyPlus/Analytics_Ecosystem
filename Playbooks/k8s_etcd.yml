@@ -1,0 +1,8 @@
+---
+
+# Install etcd
+- hosts:
+  - etcd
+  become: yes
+  roles:
+  - k8s-etcd

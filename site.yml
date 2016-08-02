@@ -4,3 +4,7 @@
 - include: Playbooks/gitlab.yml
   tags:
     - gitlab
+
+- include: Playbooks/k8s.yml
+  tags:
+    - k8s
