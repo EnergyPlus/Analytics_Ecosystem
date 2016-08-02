@@ -1,0 +1,87 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Require YAML module
+require 'yaml'
+
+# Read YAML file with box details
+hosts = YAML.load_file('servers.yml')
+
+VBOX_STATIC_IP_TEMPLATE = (ENV['VBOX_IP_TEMPLATE'] || "172.32.129.1%d")
+
+Vagrant.require_version '>= 1.7.0'
+VAGRANTFILE_API_VERSION = '2'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  # By default, Vagrant 1.7+ automatically inserts a different
+  # insecure keypair for each new VM created. The easiest way
+  # to use the same keypair for all the machines is to disable
+  # this feature and rely on the legacy insecure key.
+  config.ssh.insert_key = false
+
+  # Define the box OS and network
+  def define_vbox_box(config, host)
+    config.vm.box = host['box']
+    config.vm.network "private_network", ip: host['ip']
+  end
+
+  # Define the box for virtualbox provider
+  def set_vbox(vb, host)
+    vb.gui = false
+
+    # Customize the amount of memory on the VM:
+    vb.name = host['name']
+    vb.memory = 1024
+    vb.cpus = 2
+
+    # Use faster paravirtualized networking
+    vb.customize ["modifyvm", :id, "--nictype1", "virtio"]
+    vb.customize ["modifyvm", :id, "--nictype2", "virtio"]
+  end
+
+  # Define box. Select the different provider configure box and network
+  def define_box(config, host)
+    define_vbox_box(config, host)
+  end
+
+  # Select provider and define the vagrant box with the
+  # host dictionary: `host`
+  def set_provider(config, host)
+    config.vm.provider :virtualbox do |vb, override|
+      define_vbox_box(override, host)
+      set_vbox(vb, host)
+    end
+  end
+
+  def define_host(config, host)
+    config.vm.define host['name'] do |conf|
+      # define_box(conf, host['ip'])
+      set_provider(conf, host)
+    end
+  end
+
+  def set_common_ansible_options(ansible)
+    # ansible.groups = $groups
+    ansible.limit = "all" #otherwise the metadata wont be there for ipv4?
+    # ansible.tags = $ansible_tags unless $ansible_tags.nil?
+    ansible.raw_ssh_args = ['-o ControlMaster=no']
+  end
+
+  # Multi-machine environment. `conf` is a copy of `config` that only affects
+  # the machines within the `define` block.
+  hosts.each_with_index do |host, index|
+    # host['ip'] = VBOX_STATIC_IP_TEMPLATE % index
+    define_host(config, host)
+    # if index == hosts.size - 1
+    # end
+  end
+
+  config.vm.provision "ansible" do |ansible|
+    set_common_ansible_options(ansible)
+    ansible.playbook = "vagrant-ansible.yml"
+    ansible.extra_vars = { public_iface: "eth1" }
+  end
+
+
+end

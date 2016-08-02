@@ -1,0 +1,23 @@
+---
+
+## Server Inventory to be used with local VM using Vagrant.
+
+- name: support-server
+  ip: 172.32.128.10
+  box: centos/7
+
+- name: gitlab-server
+  ip: 172.32.128.11
+  box: centos/7
+
+- name: gitlab-runner-1
+  ip: 172.32.128.12
+  box: centos/7
+
+- name: kube-master
+  ip: 172.32.128.13
+  box: centos/7
+
+- name: kube-node-1
+  ip: 172.32.128.14
+  box: centos/7
