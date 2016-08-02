@@ -1,0 +1,6 @@
+---
+# Deploy Analytics environment.
+
+- include: Playbooks/gitlab.yml
+  tags:
+    - gitlab
