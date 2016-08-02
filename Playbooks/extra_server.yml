@@ -1,0 +1,21 @@
+---
+
+# Deploy gitlab server in the hosts inside `gitlab`
+- hosts:
+    - nfs
+  become: yes
+  roles:
+    - nfs
+  tags:
+    - nfs
+    - aux_server
+
+# Deploy gitlab server in the hosts inside `gitlab`
+- hosts:
+    - ldap
+  become: yes
+  roles:
+    - ldap
+  tags:
+    - ldap
+    - aux_server

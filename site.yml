@@ -1,6 +1,10 @@
 ---
 # Deploy Analytics environment.
 
+- include: Playbooks/extra_server.yml
+  tags:
+    - aux_server
+
 - include: Playbooks/gitlab.yml
   tags:
     - gitlab

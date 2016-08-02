@@ -1,0 +1,23 @@
+---
+
+system_ldap_domain: aikatsu.net
+system_ldap_bind_dn: CN=Naoto Suzukawa,OU=Service Accounts,OU=Idol Schools,DC=Aikatsu,DC=net
+system_ldap_bind_password: sunrise
+system_ldap_search_base: OU=Idol Schools,DC=Aikatsu,DC=net
+system_ldap_uris:
+  - ldaps://ldap-tyo.example.aikatsu.net:636
+  - ldaps://ldap-ngo.example.aikatsu.net:636
+system_ldap_access_filter_groups:
+  - CN=operations,OU=Security Groups,OU=Idol Schools,DC=Aikatsu,DC=net
+# system_ldap_access_filter_users: []
+system_ldap_access_unix_groups:
+  - operations
+system_ldap_sudo_groups:
+  - operations
+# system_ldap_sudo_users: []
+
+system_ldap_allow_passwordauth_in_sshd: true
+system_ldap_access_filter_users:
+  - hoshimiya.ichigo
+system_ldap_sudo_users:
+  - hoshimiya.ichigo
