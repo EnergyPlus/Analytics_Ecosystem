@@ -1,0 +1,10 @@
+---
+
+# Deploy gitlab server in the hosts inside `gitlab`
+
+- hosts:
+    - gitlab-server
+  become: yes
+  roles:
+    # On CoreOS pre-ansible installs Python required to run ansible steps.
+    - gitlab
