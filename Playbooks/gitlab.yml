@@ -3,3 +3,8 @@
 - include: gitlab_server.yml
   tags:
     - gitlab-server
+
+
+- include: gitlab_runners.yml
+  tags:
+    - gitlab-runner
