@@ -25,7 +25,7 @@ gitlab
 [gitlab-runners]
 gitlab-runner-1
 
-[gitlab:children]
+[gitlab-ci:children]
 gitlab-server
 gitlab-runners
 
@@ -45,7 +45,7 @@ nodes
 
 [vagrant:children]
 support-server
-gitlab
+gitlab-ci
 k8s
 
 [all:children]
