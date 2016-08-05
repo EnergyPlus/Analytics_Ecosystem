@@ -3,7 +3,7 @@
 # define the servers spinned up with vagrant.
 
 support-server    ansible_ssh_host=172.32.128.10
-gitlab-server     ansible_ssh_host=172.32.128.11
+gitlab            ansible_ssh_host=172.32.128.11
 gitlab-runner-1   ansible_ssh_host=172.32.128.12
 k8s-master        ansible_ssh_host=172.32.128.13
 k8s-node-1        ansible_ssh_host=172.32.128.14
@@ -20,7 +20,7 @@ nfs
 ldap
 
 [gitlab-server]
-gitlab-server
+gitlab
 
 [gitlab-runners]
 gitlab-runner-1
