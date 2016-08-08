@@ -1,4 +1,10 @@
 ---
 
+gitlab_domain: gitlab
+gitlab_external_url: "https:/{{ gitlab_domain }}/"
 
-read_from_group_vars_all_gitlab_ci: 'read_from_group_vars_all_gitlab_ci'
+# Common Name (CN), which should be the exact Fully Qualified Domain Name (FQDN) of the host that you intend to use the certificate with.
+gitlab_ssl_certificate: "/etc/gitlab/ssl/{{ gitlab_domain }}.crt"
+gitlab_ssl_certificate_key: "/etc/gitlab/ssl/{{ gitlab_domain }}.key"
+
+ci_runner_ssl_certificate: "~/.gitlab-runner/certs/{{ gitlab_domain }}.crt"
