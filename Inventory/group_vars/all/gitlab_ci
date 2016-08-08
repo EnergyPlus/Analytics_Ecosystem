@@ -1,0 +1,4 @@
+---
+
+
+read_from_group_vars_all_gitlab_ci: 'read_from_group_vars_all_gitlab_ci'
