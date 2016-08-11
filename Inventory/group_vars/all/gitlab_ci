@@ -41,29 +41,25 @@ gitlab_fqdn: gitlab
 # gitlab_external_url: "https://{{ gitlab_fqdn }}"
 
 ### ---- GITLAB RUNNER USER VARIABLES --- ###
-gitlab_runner_user: root
-gitlab_runner_group: root
-
-# Please override this variable when calling the role.
-# Do NOT copy your certificate or key in this file.
-# It is your responsability to check that the `ssl_certificate` has no errors.
-ssl_certificate: ''
+# gitlab_runner_user: root
+# gitlab_runner_group: root
 
 ### ---- GITLAB RUNNER CONFIGURATION VARIABLES --- ###
 
-gitlab_runner_conf_path: /etc/gitlab-runner/
-gitlab_runner_conf: config.toml
+# gitlab_runner_conf_path: /etc/gitlab-runner/
+# gitlab_runner_conf_path: '~/.gitlab-runner/'
+gitlab_runner_conf_file: config.toml
 
 # Runner tags
-gitlab_runner_tags: []
+gitlab_runner_tags: '["test"]'
 
 ## Global section
 # Maximum number of jobs to run concurrently
-gitlab_runner_concurrent: 1
+# gitlab_runner_concurrent: 1
 # defines in seconds how often to check GitLab for a new builds
-gitlab_runner_check_interval: 600
+# gitlab_runner_check_interval: 600
 # enable tracking of all system level errors to sentry
-gitlab_runner_sentry_dsn: ''
+# gitlab_runner_sentry_dsn: ''
 
 
 
@@ -71,9 +67,9 @@ gitlab_runner_sentry_dsn: ''
 # not used, just informatory
 gitlab_runner_name: 'runner_test'
 # CI URL
-gitlab_runner_coordinator_url: 'https://{{ gitlab_fqdn }}/ci'
+# gitlab_runner_coordinator_url: 'https://{{ gitlab_fqdn }}/ci'
 # runner token
-gitlab_runner_token: ''
+gitlab_runner_token: 'zWd4izFohUzGoK8GQmmz'
 # select how a project should be built, see next section
 # run build locally, default
 #   - shell
@@ -107,10 +103,10 @@ gitlab_runner_executor: 'docker'
 # don't limit
 gitlab_runner_limit: '0'
 # file containing the certificates to verify the peer when using HTTPS
-gitlab_runner_tls_path: "/etc/gitlab/certs"
-gitlab_runner_tls_ca_file: "{{ gitlab_runner_tls_path }}/{{ gitlab_fqdn }}.crt"
-# whether to verify the TLS certificate when using HTTPS, default: false
-gitlab_runner_tls_skip_verify: false
+# gitlab_runner_tls_path: "~/.gitlab-runner/certs/"
+# gitlab_runner_tls_ca_file: "{{ gitlab_runner_tls_path }}/{{ gitlab_fqdn }}.crt"
+# whether to verify the TLS certificate when using HTTPS, default: 'false'
+gitlab_runner_tls_skip_verify: 'false'
 # the name of shell to generate the script (default value is platform dependent)
 gitlab_runner_shell: ''
 # directory where builds will be stored in context of selected executor
@@ -121,10 +117,9 @@ gitlab_runner_builds_dir: ''
 # to be included in its volumes parameter.
 gitlab_runner_cache_dir: ''
 # append or overwrite environment variables
-gitlab_runner_environment:
-  - "LC_ALL=en_US.UTF-8"
+gitlab_runner_environment: '["LC_ALL=en_US.UTF-8"]'
 # don't print run commands
-gitlab_runner_disable_verbose: false
+gitlab_runner_disable_verbose: 'false'
 # set maximum build log size in kilobytes, by default set to 4096 (4MB)
 gitlab_runner_output_limit: ''
 
@@ -135,111 +130,97 @@ gitlab_runner_output_limit: ''
 # use this image to run builds
 gitlab_runner_docker_image: "ruby:2.1"
 # unix:///var/run/docker.sock
-gitlab_runner_docker_host: "runner_docker"
+# gitlab_runner_docker_host: "runner_docker"
 # specify custom hostname for Docker container
-gitlab_runner_docker_hostname: "docker_foo"
+# gitlab_runner_docker_hostname: "docker_foo"
 # when set it will use ca.pem, cert.pem and key.pem from that folder to make
 # secure TLS connection to Docker (useful in boot2docker)
-gitlab_runner_docker_tls_cert_path: ''
+# gitlab_runner_docker_tls_cert_path: ''
 # string value containing the cgroups CpusetCpus to use
-gitlab_runner_docker_cpuset_cpus: "0,1"
+# gitlab_runner_docker_cpuset_cpus: "0,1"
 # a list of DNS servers for the container to use
-gitlab_runner_docker_dns: []
+# gitlab_runner_docker_dns: ''
 # a list of DNS search domains
-gitlab_runner_docker_dns_search: []
+# gitlab_runner_docker_dns_search: ''
 # make container run in Privileged mode (insecure)
-gitlab_runner_docker_privileged: false
+# gitlab_runner_docker_privileged: 'false'
 # add additional Linux capabilities to the container
-gitlab_runner_docker_cap_add:
-  - "NET_ADMIN"
+# gitlab_runner_docker_cap_add: '["NET_ADMIN"]'
 # drop additional Linux capabilities from the container
-gitlab_runner_docker_cap_drop:
-  - "DAC_OVERRIDE"
+# gitlab_runner_docker_cap_drop: '["DAC_OVERRIDE"]'
 # set security options (--security-opt in docker run), takes a list of ':'
 # separated key/values
-gitlab_runner_docker_security_opt: []
+# gitlab_runner_docker_security_opt: ''
 # share additional host devices with the container
-gitlab_runner_docker_devices:
-  - "/dev/net/tun"
+# gitlab_runner_docker_devices: '["/dev/net/tun"]'
 # disable automatic
-gitlab_runner_docker_disable_cache: false
-# specify how long to wait for docker services, set to 0 to disable, default: 30
-gitlab_runner_docker_wait_srv_timeout: 30
-# specify where Docker caches should be stored (this can be absolute or relative
-# to current working directory)
-gitlab_runner_docker_cache_dir: ""
-# specify additional volumes that should be mounted (same syntax as Docker -v
-# option)
-gitlab_runner_docker_volumes:
-  - "/data"
-  - "/home/project/cache"
-# specify hosts that should be defined in container environment
-gitlab_runner_docker_extra_hosts:
-  - "other-host:127.0.0.1"
-# specify containers which should be linked with building container
-gitlab_runner_docker_links:
-  - "mysql_container:mysql"
-# specify additional services that should be run with build. Please visit Docker
-# Registry for list of available applications. Each service will be run in
-# separate container and linked to the build.
-gitlab_runner_docker_services:
-  - "mysql"
-  - "redis:2.8"
-  - "postgres:9"
-# specify wildcard list of images that can be specified in .gitlab-ci.yml. If
-# not present all images are allowed (equivalent to ["*/*:*"])
-gitlab_runner_docker_allowed_images:
-  - "ruby:*"
-  - "python:*"
-  - "php:*"
-# specify wildcard list of services that can be specified in .gitlab-ci.yml. If
-# not present all images are allowed (equivalent to ["*/*:*"])
-gitlab_runner_docker_allowed_services:
-  - "postgres:9.4"
-  - "postgres:latest"
-# specify the image pull policy: never, if-not-present or always (default)
-gitlab_runner_docker_pull_policy: ''
-
-
-##------ [runners.virtualbox] ------##
-# name of VirtualBox VM which will be cloned
-gitlab_runner_vb_base_name: 'my_vb_runner'
-# name or UUID of a specific snapshot of the VM from which to create a linked
-# clone. If this is empty or omitted, the current snapshot will be used. If
-# there is no current snapshot, one will be created unless disable_snapshots is
-# true, in which case a full clone of the base VM will be made.
-gitlab_runner_vb_base_snapshot: 'snapshot'
-# if disabled the VMs will be destroyed after build
-gitlab_runner_vb_disable_snapshots: false
-
-
-##------ [runners.ssh] ------##
-# where to connect (overridden when using docker-ssh)
-gitlab_runner_ssh_host: 'gitlab'
-# specify port, default: 22
-gitlab_runner_ssh_port: 22
-# specify user
-gitlab_runner_ssh_user: 'vagrant'
-# specify password
-gitlab_runner_ssh_password: ''
-# specify file path to SSH private key (id_rsa, id_dsa or id_edcsa). The file
-# needs to be stored unencrypted
-gitlab_runner_ssh_identity_file: ''
-
-
-##------ [runners.machine] ------##
-# Number of machines, that need to be created and waiting in Idle state.
-gitlab_runner_machine_IdleCount: 1
-# Time (in seconds) for machine to be in Idle state before it is removed.
-gitlab_runner_machine_IdleTime: 300
-# Builds count after which machine will be removed.
-gitlab_runner_machine_MaxBuilds: 0
-# Name of the machine. It must contain %s, which will be replaced with a unique
-# machine identifier.
-gitlab_runner_machine_MachineName: 'gitlab-runner-%s'
-# Docker Machine driver to use. More details can be found in the Docker Machine
-# configuration section.
-gitlab_runner_machine_MachineDriver: ''
-# Docker Machine options. More details can be found in the Docker Machine
-# configuration section.
-gitlab_runner_machine_MachineOptions: []
+# gitlab_runner_docker_disable_cache: 'false'
+# # specify how long to wait for docker services, set to 0 to disable, default: 30
+# gitlab_runner_docker_wait_srv_timeout: 30
+# # specify where Docker caches should be stored (this can be absolute or relative
+# # to current working directory)
+# gitlab_runner_docker_cache_dir: ""
+# # specify additional volumes that should be mounted (same syntax as Docker -v
+# # option)
+# gitlab_runner_docker_volumes: '["/data", "/home/project/cache"]'
+# # specify hosts that should be defined in container environment
+# gitlab_runner_docker_extra_hosts: '["other-host:127.0.0.1"]'
+# # specify containers which should be linked with building container
+# gitlab_runner_docker_links: '["mysql_container:mysql"]'
+# # specify additional services that should be run with build. Please visit Docker
+# # Registry for list of available applications. Each service will be run in
+# # separate container and linked to the build.
+# gitlab_runner_docker_services: '["mysql", "redis:2.8", "postgres:9"]'
+# # specify wildcard list of images that can be specified in .gitlab-ci.yml. If
+# # not present all images are allowed (equivalent to ["*/*:*"])
+# gitlab_runner_docker_allowed_images: '["ruby:*", "python:*", "php:*"]'
+# # specify wildcard list of services that can be specified in .gitlab-ci.yml. If
+# # not present all images are allowed (equivalent to ["*/*:*"])
+# gitlab_runner_docker_allowed_services: > '["postgres:9.4",
+#                                            "postgres:latest"]'
+# # specify the image pull policy: never, if-not-present or always (default)
+# gitlab_runner_docker_pull_policy: ''
+#
+#
+# ##------ [runners.virtualbox] ------##
+# # name of VirtualBox VM which will be cloned
+# gitlab_runner_vb_base_name: 'my_vb_runner'
+# # name or UUID of a specific snapshot of the VM from which to create a linked
+# # clone. If this is empty or omitted, the current snapshot will be used. If
+# # there is no current snapshot, one will be created unless disable_snapshots is
+# # true, in which case a full clone of the base VM will be made.
+# gitlab_runner_vb_base_snapshot: 'snapshot'
+# # if disabled the VMs will be destroyed after build
+# gitlab_runner_vb_disable_snapshots: 'false'
+#
+#
+# ##------ [runners.ssh] ------##
+# # where to connect (overridden when using docker-ssh)
+# gitlab_runner_ssh_host: 'gitlab'
+# # specify port, default: 22
+# gitlab_runner_ssh_port: 22
+# # specify user
+# gitlab_runner_ssh_user: 'vagrant'
+# # specify password
+# gitlab_runner_ssh_password: ''
+# # specify file path to SSH private key (id_rsa, id_dsa or id_edcsa). The file
+# # needs to be stored unencrypted
+# gitlab_runner_ssh_identity_file: ''
+#
+#
+# ##------ [runners.machine] ------##
+# # Number of machines, that need to be created and waiting in Idle state.
+# gitlab_runner_machine_IdleCount: 1
+# # Time (in seconds) for machine to be in Idle state before it is removed.
+# gitlab_runner_machine_IdleTime: 300
+# # Builds count after which machine will be removed.
+# gitlab_runner_machine_MaxBuilds: 0
+# # Name of the machine. It must contain %s, which will be replaced with a unique
+# # machine identifier.
+# gitlab_runner_machine_MachineName: 'gitlab-runner-%s'
+# # Docker Machine driver to use. More details can be found in the Docker Machine
+# # configuration section.
+# gitlab_runner_machine_MachineDriver: ''
+# # Docker Machine options. More details can be found in the Docker Machine
+# # configuration section.
+# gitlab_runner_machine_MachineOptions: ''
