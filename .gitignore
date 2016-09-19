@@ -1,3 +1,6 @@
 
 # Ignore Ansible .retry files
 *.retry
+
+# Nothing inside this folder should be tracked.
+SSL_Certs/*
