@@ -1,0 +1,5 @@
+---
+
+nfs_exports:
+  - "/opt/jupyter_notebook    *(rw,sync,no_root_squash)"
+  - "/opt/gitlab              *(rw,sync,no_root_squash)"
