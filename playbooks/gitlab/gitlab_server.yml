@@ -2,7 +2,9 @@
 
 # Deploy gitlab server in the hosts inside `gitlab`
 - hosts:
-    - gitlab-runners
+    - gitlab-server
   become: yes
   roles:
-    - gitlab-runner
+    - gitlab
+  tags:
+    - gitlab-server
