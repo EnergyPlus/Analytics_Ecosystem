@@ -1,0 +1,18 @@
+---
+
+- name: GitlabRunner | list configured runners
+  command: gitlab-runner list
+  register: runners_list
+  changed_when: False
+
+- name: GitlabRunner | register runner to GitLab
+  command: gitlab-runner register >
+           --non-interactive
+           --url '{{ gitlab_external_url }}/ci'
+           --registration-token '{{ item.registration_token }}'
+           --description '{{ item.description }}'
+           --executor '{{ item.executor }}'
+           {{ item.args }}
+  when: runners_list.stderr.find('\n{{ item.description }}') == -1 and
+        '{{ item.host }}' == '{{ inventory_hostname }}'
+  with_items: "{{ gitlab_runner_list_runners }}"

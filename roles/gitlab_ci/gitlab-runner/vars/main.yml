@@ -1,0 +1,3 @@
+---
+# vars file for gitlab-runner
+gitlab_runner_url: https://packages.gitlab.com/install/repositories/runner/gitlab-ci-multi-runner

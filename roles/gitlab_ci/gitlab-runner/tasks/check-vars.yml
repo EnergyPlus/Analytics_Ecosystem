@@ -1,0 +1,34 @@
+---
+
+- fail: msg="gitlab runner token is invalid; {{ item.host }}:{{ item.gitlab_runner_token }}"
+  when: "'{{ item.registration_token }}' == ''"
+  with_items: "{{ gitlab_runner_list_runners }}"
+  tags:
+    - check-vars
+
+
+- fail: msg="gitlab runner executor is invalid; {{ item.host }}:{{ item.executor }}"
+  when: "'{{ item.executor }}' != 'docker'             and \
+         '{{ item.executor }}' != 'docker+machine'     and \
+         '{{ item.executor }}' != 'docker-ssh'         and \
+         '{{ item.executor }}' != 'docker-ssh+machine' and \
+         '{{ item.executor }}' != 'shell'              and \
+         '{{ item.executor }}' != 'ssh'                and \
+         '{{ item.executor }}' != 'parallels'          and \
+         '{{ item.executor }}' != 'virtualbox'             "
+  with_items: "{{ gitlab_runner_list_runners }}"
+  tags:
+    - check-vars
+
+- name: GitlabRunner | check if docker is installed running
+  service:
+    name=docker
+    state=started
+  register: service_docker
+  when: "'{{ item.executor }}' == 'docker'               or  \
+         '{{ item.executor }}' == 'docker+machine'       or  \
+         '{{ item.executor }}' == 'docker-ssh'           or  \
+         '{{ item.executor }}' == 'docker-ssh+machine' "
+  with_items: "{{ gitlab_runner_list_runners }}"
+  tags:
+    - check-services

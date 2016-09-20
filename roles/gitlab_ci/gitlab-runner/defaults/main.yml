@@ -1,0 +1,33 @@
+---
+### ---- GITLAB-CI URL VARIABLES --- ###
+# GitLab coordinator URL Fully Qualified Domain Name (FQDN)
+gitlab_fqdn: gitlab
+gitlab_external_url: "https://{{ gitlab_fqdn }}"
+
+### ---- GITLAB RUNNER USER VARIABLES --- ###
+gitlab_runner_user: root
+gitlab_runner_group: root
+
+# Please override this variable when calling the role.
+# Do NOT copy your certificate or key in this file.
+# It is your responsability to check that the `ssl_certificate` has no errors.
+ssl_certificate: ''
+
+### ---- GITLAB RUNNER CONFIGURATION VARIABLES --- ###
+
+# gitlab_runner_list_runners:
+#   - host: gitlab-runner-1
+#     registration_token: 'CopyYourTokenHere'
+#     description: 'SomeDescription'
+#     executor: 'AExecutor'
+#     args: |
+#       --registration-token 'CopyYourTokenHere'
+#       --description 'SomeDescription'
+#       --tag-list 'OneTag, TwoTags'
+#       --executor 'executer'
+#       --docker-image 'docker_image_for_docker_executor'
+gitlab_runner_list_runners: []
+
+# file containing the certificates to verify the peer when using HTTPS
+# If it is left empty it will define the default path
+gitlab_runner_tls_ca_file: ''

@@ -1,0 +1,25 @@
+---
+galaxy_info:
+  author: Adrian G Prado
+
+  description: GitLab Runner
+
+  license: MIT
+
+  min_ansible_version: 2.0
+
+  platforms:
+  - name: EL
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    version:
+    - all
+
+  galaxy_tags:
+    - development
+
+dependencies: []

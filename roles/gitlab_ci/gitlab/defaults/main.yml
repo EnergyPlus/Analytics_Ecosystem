@@ -1,0 +1,62 @@
+---
+# General config.
+# fully qualified domain name: your.gitlab.domain.example.com
+gitlab_fqdn: gitlab
+gitlab_external_url: "https://{{ gitlab_fqdn }}/"
+gitlab_git_data_dir: "/var/opt/gitlab/git-data"
+
+# SSL Configuration.
+gitlab_redirect_http_to_https: "true"
+gitlab_ssl_certificate: "/etc/gitlab/ssl/{{ gitlab_fqdn }}.crt"
+gitlab_ssl_certificate_key: "/etc/gitlab/ssl/{{ gitlab_fqdn }}.key"
+
+# SSL Self-signed Certificate Configuration.
+gitlab_use_self_signed_cert: true
+gitlab_self_signed_cert_subj: "/C=US/ST=Missouri/L=Saint Louis/O=IT/CN=gitlab"
+
+# SSL Deploy Certificate Configuration.
+#   - This option and `gitlab_create_self_signed_cert` exclude each other
+#     if `ssl_certificate` and `ssl_certificate_key` are defined and `!= ''`
+#     the script automatically will deploy those certificates
+#   - Please do NOT put you certificates in this file. And do NOT push any
+#     certificate to github or any type of storage service.
+#     usage:
+#       - Override this variables inside a file and and use `vars_files:`
+#         Ansible module. Other approach is to use a file inside
+#         `group_vars/all_secrets`
+#       - ENCRIPT the file with Ansible vault:
+#         Your SSL certificates should never be uploaded in plain text. SSH
+#         connection work in plain text by default. To solve this problem
+#         Ansible provides vault. Ansible vault will encript a file with
+#         variables. The encripted variables will be decripted in the
+#         destination machine.
+#
+#             $ touch group_vars/secrets_all.yml
+#             # copy you certificates inside group_vars/secrets_all.yml
+#             $ ansible-vault encrypt group_vars/secrets_all.yml
+#
+ssl_certificate: ''
+ssl_certificate_key: ''
+
+# LDAP Configuration.
+gitlab_ldap_enabled: "false"
+gitlab_ldap_host: "example.com"
+gitlab_ldap_port: "389"
+gitlab_ldap_uid: "sAMAccountName"
+gitlab_ldap_method: "plain"
+gitlab_ldap_bind_dn: "CN=Username,CN=Users,DC=example,DC=com"
+gitlab_ldap_password: "password"
+gitlab_ldap_base: "DC=example,DC=com"
+
+# Probably best to leave this as the default, unless doing testing.
+gitlab_restart_handler_failed_when: 'gitlab_restart.rc != 0'
+
+# Optional settings.
+gitlab_time_zone: "UTC"
+gitlab_backup_keep_time: "604800"
+
+# Email configuration.
+gitlab_email_enabled: "false"
+gitlab_email_from: 'gitlab@example.com'
+gitlab_email_display_name: 'Gitlab'
+gitlab_email_reply_to: 'gitlab@example.com'

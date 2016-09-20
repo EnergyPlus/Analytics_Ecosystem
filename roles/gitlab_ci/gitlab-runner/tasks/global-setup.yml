@@ -1,0 +1,44 @@
+---
+
+# As a rule of thumb I don't like to have servicies that can execute random
+# code, running with `root` privileges. So lets create a group and User to run
+# Gitlab-Runner
+- name: GitlabRunner | Create Group for `grunner` User
+  group:
+    name={{ gitlab_runner_group }}
+    state=present
+  when: "'{{ gitlab_runner_group }}' != 'root'"
+
+- name: GitlabRunner | Create User `grunner`
+  user:
+    name={{ gitlab_runner_user }}
+    comment="Gitlab Runner"
+    group={{ gitlab_runner_group }}
+  when: "'{{ gitlab_runner_user }}' != 'root'"
+
+- name: GitlabRunner | Create SSL configuration folder.
+  file:
+    path="{{ gitlab_runner_conf_path }}/certs"
+    state=directory
+    owner={{ gitlab_runner_user }}
+    group={{ gitlab_runner_user }}
+    mode=0700
+  when: "'{{ ssl_certificate }}' != '' "
+
+- name: GitlabRunner | Default TLS cert path
+  set_fact:
+    gitlab_runner_tls_ca_file: "{{ gitlab_runner_conf_path }}/certs/{{ gitlab_fqdn }}.crt"
+  when: "'{{ gitlab_runner_tls_ca_file }}' == ''"
+
+# Copy gitlab/ci SSL certificate
+- name: GitlabRunner | Deploy self-signed certificate.
+  template:
+    src={{ item.src }}
+    dest={{ item.dest }}
+    owner={{ gitlab_runner_user }}
+    group={{ gitlab_runner_user }}
+    mode=0644
+  with_items:
+    - src:  "ssl_certificate.j2"
+      dest: "{{ gitlab_runner_tls_ca_file }}"
+  when: "'{{ ssl_certificate }}' != '' "

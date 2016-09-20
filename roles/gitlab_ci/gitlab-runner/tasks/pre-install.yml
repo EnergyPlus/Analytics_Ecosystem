@@ -1,0 +1,15 @@
+---
+# tasks file to install gitlab-runner repository
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- name: GitlabRunner | download gitlab-runner script
+  get_url:
+    url="{{ gitlab_runner_url }}/{{ gitlab_runner_script }}"
+    dest="/tmp/{{ gitlab_runner_script }}"
+    mode=0755
+
+# TODO: If there is no interent connection provide the script from files
+
+- name: GitlabRunner | execute gitlab-runner script
+  raw: "sh /tmp/{{ gitlab_runner_script }}"

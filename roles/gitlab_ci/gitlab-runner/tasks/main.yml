@@ -1,0 +1,32 @@
+---
+# tasks file for gitlab-runner
+
+- include: check-vars.yml
+  tags:
+    - checks
+
+- name: GitlabRunner | Initialize def. conf. path based on User
+  set_fact:
+    gitlab_runner_conf_path: /etc/gitlab-runner
+
+- name: GitlabRunner | Define def. conf. path based on User
+  set_fact:
+    gitlab_runner_conf_path: /home/{{ gitlab_runner_user }}/.gitlab-runner
+  when: "'{{ gitlab_runner_user }}' != 'root'"
+
+- include: pre-install.yml
+  tags:
+    - pre-install
+
+- include: install.yml
+  tags:
+    - install
+    - update
+
+- include: global-setup.yml
+  tags:
+    - configure
+
+- include: register.yml
+  tags:
+    - register

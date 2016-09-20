@@ -1,0 +1,9 @@
+---
+
+job1:
+  script:
+    - echo "execute-script-for-job1"
+
+job2:
+  script:
+    - echo "execute-script-for-job2"

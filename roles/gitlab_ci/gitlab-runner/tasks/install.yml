@@ -1,0 +1,6 @@
+---
+
+- name: GitlabRunner | update gitlab-runner package
+  package:
+    name=gitlab-ci-multi-runner
+    state=latest
