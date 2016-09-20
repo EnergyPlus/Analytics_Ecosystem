@@ -53,7 +53,6 @@ k8s
 docker
 
 [vagrant:vars]
-host_key_checking=False
 ansible_user='vagrant'
 ansible_private_key_file='~/.vagrant.d/insecure_private_key'
 

@@ -12,4 +12,5 @@ else
     echo 'pint '$@' ansble hosts'
     ansible_hosts="$@"
 fi
-ansible ${ansible_hosts} -m ping
+
+ansible -i ${inventory} ${ansible_hosts} -m ping
