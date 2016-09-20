@@ -1,6 +1,7 @@
 #!/bin/sh
 
-. ./init.sh
+FILE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+. ${FILE_DIR}/../init.sh
 
 # The developer can specify the hosts to ping with a list of arguments
 ansible_hosts='all'

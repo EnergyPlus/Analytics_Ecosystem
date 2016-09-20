@@ -1,9 +1,10 @@
 #!/bin/bash
 
-CUR_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-INVENTORY_DIR="${CUR_DIR}/../inventory"
-PLAYBOOKS_DIR="${CUR_DIR}/../playbooks"
+INVENTORY_DIR="${SCRIPT_DIR}/../inventory"
+PLAYBOOKS_DIR="${SCRIPT_DIR}/../playbooks"
+ROLES_DIR="${SCRIPT_DIR}/../roles"
 
 inventory=${INVENTORY:-${INVENTORY_DIR}/vagrant_inventory}
 

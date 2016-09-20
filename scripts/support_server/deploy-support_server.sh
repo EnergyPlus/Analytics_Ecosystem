@@ -1,6 +1,7 @@
 # Ansible command to deploy nts server
 
-. ./init.sh
+FILE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+. ${FILE_DIR}/../init.sh
 
 # Define variables
 inventory=${INVENTORY:-${INVENTORY_DIR}/vagrant_inventory}
