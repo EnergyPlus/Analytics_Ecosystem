@@ -1,0 +1,7 @@
+---
+
+# Install etcd
+- include: deploy-nfs.yml
+
+# Install docker
+- include: deploy-ldap.yml

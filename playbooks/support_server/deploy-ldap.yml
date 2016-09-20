@@ -1,0 +1,10 @@
+---
+
+- hosts:
+    - ldap
+  become: yes
+  roles:
+    - ldap
+  tags:
+    - ldap
+    - aux_server
