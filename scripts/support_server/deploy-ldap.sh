@@ -2,8 +2,5 @@
 
 . ./init.sh
 
-# Define variables
-inventory=${INVENTORY:-${INVENTORY_DIR}/vagrant_inventory}
-
 ansible-playbook \
   -i ${inventory} ${PLAYBOOKS_DIR}/support_server/deploy-ldap.yml "$@"
