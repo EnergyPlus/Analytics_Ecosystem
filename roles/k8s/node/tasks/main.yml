@@ -32,7 +32,8 @@
 
 - name: Run Ubuntu post tasks
   include: ubuntu-post.yml
-  when: not ansible_distribution == 'Ubuntu' and not ansible_distribution_major_version|int < 15
+  when: not ansible_distribution == 'Ubuntu' and
+        not ansible_distribution_major_version|int < 15
   tags: configure
 
 # Networking
