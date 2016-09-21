@@ -17,14 +17,7 @@
 - include: deploy-docker.yml
 
 # install flannel
-- hosts:
-    - masters
-    - nodes
-  become: yes
-  roles:
-    - flannel
-  tags:
-    - network-service-install
+- include: deploy-flannel.yml
 
 # install kube master services
 - include: deploy-master.yml
