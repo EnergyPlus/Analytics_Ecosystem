@@ -1,13 +1,11 @@
 ---
 - name: Prepare and write Flannel configuration to etcd
   include: config.yml
+  delegate_to: "{{ groups['etcd'][0] }}"
 
 - name: Install Flannel
   include: client.yml
   when: inventory_hostname in groups['masters'] + groups['nodes']
-
-- include: ubuntu.yml
-  when: ansible_distribution == 'Ubuntu'
 
 - include: firewalld.yml
   when: has_firewalld
