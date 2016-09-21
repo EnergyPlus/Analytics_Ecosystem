@@ -1,7 +1,6 @@
 ---
 - name: Install openssl for easy-rsa stuff
-  action: "{{ ansible_pkg_mgr }}"
-  args:
+  package:
     name: "{{ item }}"
     state: latest
   with_items:
