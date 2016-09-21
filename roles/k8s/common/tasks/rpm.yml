@@ -11,6 +11,13 @@
     has_firewalld: true
   when: firewalld_check.rc == 0
 
+- name: Start firewalld service
+  service:
+    name=firewalld
+    state=started
+    enabled=yes
+  when: has_firewalld
+
 - name: Determine if iptables-services installed
   command: "rpm -q iptables-services"
   register: iptables_check
@@ -22,3 +29,10 @@
   set_fact:
     has_iptables: true
   when: iptables_check.rc == 0
+
+- name: Start iptables service
+  service:
+    name=iptables
+    state=started
+    enabled=yes
+  when: has_iptables
