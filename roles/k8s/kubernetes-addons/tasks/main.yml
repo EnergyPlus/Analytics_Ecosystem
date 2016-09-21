@@ -3,7 +3,7 @@
   file: path={{ kube_addons_dir }} state=directory
 
 - include: generic-install.yml
-  when: not is_atomic and not is_coreos
+  when: not is_atomic
 
 - name: Assures local addon dir exists
   local_action: file
@@ -50,12 +50,13 @@
   copy:
     src=common/python-image/
     dest={{ kube_script_dir }}/python-image
-  when: is_coreos or (ansible_distribution == "Fedora" and is_atomic)
+  when: ansible_distribution == "Fedora" and is_atomic
   register: kube_addons_python_image_dockerfile
 
 - name: Build Python image to use in Kubernetes Addons
   shell: "docker build -t python:2.7-slim-pyyaml {{ kube_script_dir }}/python-image"
-  when: is_coreos or (ansible_distribution == "Fedora" and is_atomic) and kube_addons_python_image_dockerfile | changed
+  when: (ansible_distribution == "Fedora" and is_atomic) and
+         kube_addons_python_image_dockerfile | changed
 
 - name: Run kube-gen-token script to create {{ kube_token_dir }}/known_tokens.csv
   command: "{{ kube_script_dir }}/kube-gen-token.sh {{ item }}"
@@ -72,14 +73,20 @@
     - restart kube-addons
 
 - name: Install kube-addons service
-  template: src=kube-addons.service.j2 dest=/etc/systemd/system/kube-addons.service
+  template:
+    src=kube-addons.service.j2
+    dest=/etc/systemd/system/kube-addons.service
   notify:
     - reload and restart kube-addons
-  when: not (ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 15)
+  when: not (ansible_distribution == "Ubuntu" and
+             ansible_distribution_major_version|int < 15)
 
 - name: Install kube-addons upstart configuration
-  template: src=kube-addons.upstart.j2 dest=/etc/init/kube-addons.conf
-  when: ansible_distribution == "Ubuntu" and ansible_distribution_major_version|int < 15
+  template:
+    src=kube-addons.upstart.j2
+    dest=/etc/init/kube-addons.conf
+  when: ansible_distribution == "Ubuntu" and
+        ansible_distribution_major_version|int < 15
 
 - name: Enable and start kube addons
   service: name=kube-addons enabled=yes state=started
