@@ -10,6 +10,9 @@
   tags:
     - pre-ansible
 
+# Generate /etc/hosts file with ip and hosts_names
+- include: ../all_hosts/generate-hosts-file.yml
+
 # Install etcd
 - include: deploy-etcd.yml
 
