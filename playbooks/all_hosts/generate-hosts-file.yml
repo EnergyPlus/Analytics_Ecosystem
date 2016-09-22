@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: yes
+  vars:
+    - public_iface: "{{ ansible_default_ipv4.interface }}"
+  roles:
+    - hosts-file
+  tags:
+    - hosts-file

@@ -3,12 +3,13 @@
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # folders with ansible roles
-roles_k8s="${SCRIPT_DIR}/../roles/k8s"
-roles_gitlab="${SCRIPT_DIR}/../roles/gitlab_ci"
-roles_sserver="${SCRIPT_DIR}/../roles/support_server"
+rolesK8s="${SCRIPT_DIR}/../roles/k8s"
+rolesGitlab="${SCRIPT_DIR}/../roles/gitlab_ci"
+rolesSServer="${SCRIPT_DIR}/../roles/support_server"
+rolesAllHosts="${SCRIPT_DIR}/../roles/all_hosts"
 
 # Ansible env var with roles paths
-export ANSIBLE_ROLES_PATH=${roles_k8s}:${roles_gitlab}:${roles_gitlab}
+export ANSIBLE_ROLES_PATH=${rolesK8s}:${rolesGitlab}:${rolesSServer}:${rolesAllHosts}
 
 # Ansible config location
 export ANSIBLE_CONFIG=${SCRIPT_DIR}/ansible.cfg
@@ -27,6 +28,6 @@ if [[ ${inventory} = ${INVENTORY_DIR}/vagrant_inventory ]]; then
   export ANSIBLE_HOST_KEY_CHECKING=False
 
   # Add directories with external ansbile roles
-  external_roles="${HOME}/Projects/NRG/AnsibleRoles/"
-  export ANSIBLE_ROLES_PATH=${ANSIBLE_ROLES_PATH}:${external_roles}
+  roles_external="${HOME}/Projects/NRG/AnsibleRoles/"
+  export ANSIBLE_ROLES_PATH=${ANSIBLE_ROLES_PATH}:${roles_external}
 fi

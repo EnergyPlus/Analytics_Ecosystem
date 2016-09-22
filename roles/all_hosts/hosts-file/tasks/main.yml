@@ -1,0 +1,11 @@
+---
+# tasks file for ansible-role-hosts-file
+
+# On stock Core OS there is no /etc/hosts.
+- name: "Build hosts file"
+  lineinfile:
+    dest=/etc/hosts regexp='.*{{ item }}$'
+    line="{{ hostvars[item].ansible_host }} {{item}}"
+    state=present
+  when: hostvars[item].ansible_host is defined
+  with_items: "{{ groups['all']}}"
