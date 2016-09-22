@@ -77,11 +77,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # end
   end
 
-  config.vm.provision "ansible" do |ansible|
-    set_common_ansible_options(ansible)
-    ansible.playbook = "vagrant-ansible.yml"
-    ansible.extra_vars = { public_iface: "eth1" }
-  end
+  # config.vm.provision "ansible" do |ansible|
+  #   set_common_ansible_options(ansible)
+  #   ansible.playbook = "vagrant-ansible.yml"
+  #   ansible.extra_vars = { public_iface: "eth1" }
+  # end
 
 
 end

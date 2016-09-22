@@ -3,7 +3,7 @@
   become: yes
   roles:
     # On CoreOS pre-ansible installs Python required to run further ansible steps.
-    - os-info
+    - pre-ansible
 
 - hosts: all
   become: yes
