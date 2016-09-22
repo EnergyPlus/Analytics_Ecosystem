@@ -1,0 +1,10 @@
+---
+- name: Deploy flannel
+  hosts:
+    - masters
+    - nodes
+  become: yes
+  roles:
+    - flannel
+  tags:
+    - network-service-install
